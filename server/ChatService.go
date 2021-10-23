@@ -1,19 +1,27 @@
 package server
 
 import (
-	"context"
 	"github.com/StrikerSK/go-grpc/proto/chat"
+	"google.golang.org/grpc"
 	"log"
+	"net"
+	"os"
 )
 
-type Server struct {
-	chat.UnimplementedChatServiceServer
-}
+func CreateServer() {
+	lis, err := net.Listen("tcp", ":9000")
+	if err != nil {
+		log.Printf("Server init: %v\n", err)
+		os.Exit(1)
+	}
 
-func (s *Server) SayHello(ctx context.Context, message *chat.Message) (*chat.Message, error) {
-	log.Printf("Client message: %s\n", message.Body)
+	s := Server{}
 
-	return &chat.Message{
-		Body: "Server is greeting you!",
-	}, nil
+	grpcServer := grpc.NewServer()
+	chat.RegisterChatServiceServer(grpcServer, &s)
+
+	if err = grpcServer.Serve(lis); err != nil {
+		log.Printf("Server init: %v\n", err)
+		os.Exit(1)
+	}
 }
