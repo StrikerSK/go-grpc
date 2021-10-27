@@ -19,7 +19,7 @@ func SendMessage() {
 
 	c := chat.NewChatServiceClient(conn)
 
-	message := chat.Message{Body: "Hello server"}
+	message := chat.UserMessage{Body: "Hello server"}
 
 	response, err := c.SayHello(context.Background(), &message)
 	if err != nil {

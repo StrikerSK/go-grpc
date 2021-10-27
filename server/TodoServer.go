@@ -1,22 +1,23 @@
 package server
 
 import (
-	"github.com/StrikerSK/go-grpc/proto/chat"
+	"github.com/StrikerSK/go-grpc/proto/todo"
+	"github.com/StrikerSK/go-grpc/src"
 	"google.golang.org/grpc"
 	"log"
 	"net"
 	"os"
 )
 
-func CreateChatServer() {
-	lis, err := net.Listen("tcp", "localhost:9000")
+func CreateTodoServer() {
+	lis, err := net.Listen("tcp", src.ResolvePortNumber())
 	if err != nil {
 		log.Printf("Server init: %v\n", err)
 		os.Exit(1)
 	}
 
 	grpcServer := grpc.NewServer()
-	chat.RegisterChatServiceServer(grpcServer, &Server{})
+	todo.RegisterTodoServiceServer(grpcServer, &TodoServer{})
 
 	if err = grpcServer.Serve(lis); err != nil {
 		log.Printf("Server init: %v\n", err)
