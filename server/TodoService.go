@@ -24,6 +24,22 @@ func (s *TodoServer) ReadTodo(ctx context.Context, id *todo.StringRequest) (*tod
 	return tmpTodo.ConvertToProto(), err
 }
 
+func (s *TodoServer) UpdateTodo(ctx context.Context, input *todo.CustomTodo) (*todo.StringResponse, error) {
+	if err := Repository.GetRepository().UpdateTodo(Entity.ConvertFromProto(input)); err != nil {
+		return &todo.StringResponse{Output: err.Error()}, nil
+	}
+
+	return &todo.StringResponse{Output: ""}, nil
+}
+
+func (s *TodoServer) DeleteTodo(ctx context.Context, input *todo.StringRequest) (*todo.StringResponse, error) {
+	if err := Repository.GetRepository().DeleteTodo(input.GetInput()); err != nil {
+		return &todo.StringResponse{Output: err.Error()}, nil
+	}
+
+	return &todo.StringResponse{Output: ""}, nil
+}
+
 func (s *TodoServer) FindAll(context.Context, *emptypb.Empty) (*todo.TodoArray, error) {
 	var outputSlice []*todo.CustomTodo
 	for _, item := range Repository.GetRepository().FindAll() {

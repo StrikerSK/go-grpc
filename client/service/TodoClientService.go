@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/StrikerSK/go-grpc/client"
 	"github.com/StrikerSK/go-grpc/server/Entity"
-	"github.com/StrikerSK/go-grpc/server/Repository"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"log"
@@ -38,12 +37,12 @@ func UpdateTodo(c *fiber.Ctx) error {
 	}
 
 	tmpTodo.Id = c.Params("id")
-	_ = Repository.GetRepository().UpdateTodo(tmpTodo)
+	_ = client.UpdateTodo(tmpTodo)
 	return c.SendStatus(http.StatusOK)
 }
 
 func DeleteTodo(c *fiber.Ctx) error {
-	_ = Repository.GetRepository().DeleteTodo(c.Params("id"))
+	_, _ = client.DeleteTodo(c.Params("id"))
 	return c.SendStatus(http.StatusOK)
 }
 
