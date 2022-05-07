@@ -20,7 +20,7 @@ func CreateClient() todo.TodoServiceClient {
 }
 
 func CreateTodo() string {
-	customTodo := todo.NewTodo{
+	customTodo := todo.CustomTodo{
 		Name:        "First Todo",
 		Description: "Created First Todo",
 		Done:        false,

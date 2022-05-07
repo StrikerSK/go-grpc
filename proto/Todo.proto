@@ -9,17 +9,15 @@ import "google/protobuf/empty.proto";
 
 message Empty {}
 
-message IdRequest {
-  string id = 1;
+message StringRequest {
+  string input = 1;
 }
 
-message NewTodo {
-  string name = 1;
-  string description = 2;
-  bool done = 3;
+message StringResponse {
+  string output = 1;
 }
 
-message PersistedTodo {
+message CustomTodo {
   string id = 1;
   string name = 2;
   string description = 3;
@@ -27,7 +25,9 @@ message PersistedTodo {
 }
 
 service TodoService {
-  rpc CreateTodo(NewTodo) returns(IdRequest) {}
-  rpc GetTodo(IdRequest) returns(PersistedTodo) {}
-  rpc GetTodos(google.protobuf.Empty) returns(stream PersistedTodo) {}
+  rpc FindAll(google.protobuf.Empty) returns(stream CustomTodo) {}
+  rpc CreateTodo(CustomTodo) returns(StringResponse) {}
+  rpc ReadTodo(StringRequest) returns(CustomTodo) {}
+  rpc UpdateTodo(CustomTodo) returns(StringResponse) {}
+  rpc DeleteTodo(StringRequest) returns(StringResponse) {}
 }
