@@ -31,12 +31,12 @@ func CreateTodo() string {
 		log.Fatalf("Error calling method: %v\n", err)
 	}
 
-	log.Printf("Server response: %s\n", response.Id)
-	return response.Id
+	log.Printf("Server response: %s\n", response.Output)
+	return response.Output
 }
 
-func GetTodo(id string) {
-	response, err := CreateClient().GetTodo(context.Background(), &todo.IdRequest{Id: id})
+func ReadTodo(id string) {
+	response, err := CreateClient().ReadTodo(context.Background(), &todo.StringRequest{Input: id})
 	if err != nil {
 		log.Fatalf("Error calling method: %v\n", err)
 	}
@@ -45,10 +45,10 @@ func GetTodo(id string) {
 }
 
 func GetTodos() {
-	response, err := CreateClient().GetTodos(context.Background(), &emptypb.Empty{})
+	response, err := CreateClient().FindAll(context.Background(), &emptypb.Empty{})
 	if err != nil {
 		log.Fatalf("Error calling method: %v\n", err)
 	}
 
-	log.Println(response)
+	log.Println(response.Recv())
 }

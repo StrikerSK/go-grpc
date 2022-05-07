@@ -26,7 +26,13 @@ func (r *LocalTodoRepository) FindAll() []Entity.TodoStructure {
 		{
 			Id:          "123",
 			Name:        "MainTask",
-			Description: "This represents main task",
+			Description: "This represents task 1",
+			Done:        false,
+		},
+		{
+			Id:          "123",
+			Name:        "MainTask",
+			Description: "This represents task 2",
 			Done:        false,
 		},
 	}
