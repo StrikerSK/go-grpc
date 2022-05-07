@@ -17,6 +17,10 @@ message StringResponse {
   string output = 1;
 }
 
+message TodoArray {
+  repeated CustomTodo todos = 1;
+}
+
 message CustomTodo {
   string id = 1;
   string name = 2;
@@ -25,7 +29,7 @@ message CustomTodo {
 }
 
 service TodoService {
-  rpc FindAll(google.protobuf.Empty) returns(stream CustomTodo) {}
+  rpc FindAll(google.protobuf.Empty) returns(TodoArray) {}
   rpc CreateTodo(CustomTodo) returns(StringResponse) {}
   rpc ReadTodo(StringRequest) returns(CustomTodo) {}
   rpc UpdateTodo(CustomTodo) returns(StringResponse) {}

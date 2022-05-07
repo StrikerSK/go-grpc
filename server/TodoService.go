@@ -7,7 +7,6 @@ import (
 	"github.com/StrikerSK/go-grpc/server/Repository"
 	"github.com/google/uuid"
 	"google.golang.org/protobuf/types/known/emptypb"
-	"log"
 )
 
 type TodoServer struct {
@@ -25,13 +24,10 @@ func (s *TodoServer) ReadTodo(ctx context.Context, id *todo.StringRequest) (*tod
 	return tmpTodo.ConvertToProto(), err
 }
 
-func (s *TodoServer) FindAll(empty *emptypb.Empty, todoStream todo.TodoService_FindAllServer) error {
-	tasks := Repository.GetRepository().FindAll()
-	for index := range tasks {
-		log.Println(tasks[index])
-		if err := todoStream.Send(tasks[index].ConvertToProto()); err != nil {
-			return err
-		}
+func (s *TodoServer) FindAll(context.Context, *emptypb.Empty) (*todo.TodoArray, error) {
+	var outputSlice []*todo.CustomTodo
+	for _, item := range Repository.GetRepository().FindAll() {
+		outputSlice = append(outputSlice, item.ConvertToProto())
 	}
-	return nil
+	return &todo.TodoArray{Todos: outputSlice}, nil
 }
