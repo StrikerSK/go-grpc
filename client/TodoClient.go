@@ -11,7 +11,7 @@ import (
 func CreateTodo(input Entity.TodoStructure) string {
 	response, err := GetClient().CreateTodo(context.Background(), input.ConvertToProto())
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 	}
 
 	log.Printf("Server response: %s\n", response.Output)
@@ -21,7 +21,7 @@ func CreateTodo(input Entity.TodoStructure) string {
 func ReadTodo(id string) (Entity.TodoStructure, error) {
 	response, err := GetClient().ReadTodo(context.Background(), &todo.StringRequest{Input: id})
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 		return Entity.TodoStructure{}, err
 	}
 
@@ -31,7 +31,7 @@ func ReadTodo(id string) (Entity.TodoStructure, error) {
 func UpdateTodo(input Entity.TodoStructure) string {
 	response, err := GetClient().UpdateTodo(context.Background(), input.ConvertToProto())
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 	}
 	return response.Output
 }
@@ -39,7 +39,7 @@ func UpdateTodo(input Entity.TodoStructure) string {
 func DeleteTodo(id string) (string, error) {
 	response, err := GetClient().DeleteTodo(context.Background(), &todo.StringRequest{Input: id})
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 		return "", err
 	}
 
@@ -49,7 +49,7 @@ func DeleteTodo(id string) (string, error) {
 func GetTodos() (output []Entity.TodoStructure) {
 	response, err := GetClient().FindAll(context.Background(), &emptypb.Empty{})
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 	}
 
 	for _, item := range response.Todos {
