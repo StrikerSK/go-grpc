@@ -3,52 +3,58 @@ package client
 import (
 	"context"
 	"github.com/StrikerSK/go-grpc/proto/todo"
-	"github.com/StrikerSK/go-grpc/src"
-	"google.golang.org/grpc"
+	"github.com/StrikerSK/go-grpc/server/Entity"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"log"
 )
 
-func CreateClient() todo.TodoServiceClient {
-	var conn *grpc.ClientConn
-	conn, err := grpc.Dial(src.ResolvePortNumber(), grpc.WithInsecure())
+func CreateTodo(input Entity.TodoStructure) string {
+	response, err := GetClient().CreateTodo(context.Background(), input.ConvertToProto())
 	if err != nil {
-		log.Fatalf("Could not connect: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 	}
 
-	return todo.NewTodoServiceClient(conn)
+	log.Printf("Server response: %s\n", response.Output)
+	return response.Output
 }
 
-func CreateTodo() string {
-	customTodo := todo.NewTodo{
-		Name:        "First Todo",
-		Description: "Created First Todo",
-		Done:        false,
-	}
-
-	response, err := CreateClient().CreateTodo(context.Background(), &customTodo)
+func ReadTodo(id string) (Entity.TodoStructure, error) {
+	response, err := GetClient().ReadTodo(context.Background(), &todo.StringRequest{Input: id})
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
+		return Entity.TodoStructure{}, err
 	}
 
-	log.Printf("Server response: %s\n", response.Id)
-	return response.Id
+	return Entity.ConvertFromProto(response), nil
 }
 
-func GetTodo(id string) {
-	response, err := CreateClient().GetTodo(context.Background(), &todo.IdRequest{Id: id})
+func UpdateTodo(input Entity.TodoStructure) string {
+	response, err := GetClient().UpdateTodo(context.Background(), input.ConvertToProto())
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
 	}
-
-	log.Println(response)
+	return response.Output
 }
 
-func GetTodos() {
-	response, err := CreateClient().GetTodos(context.Background(), &emptypb.Empty{})
+func DeleteTodo(id string) (string, error) {
+	response, err := GetClient().DeleteTodo(context.Background(), &todo.StringRequest{Input: id})
 	if err != nil {
-		log.Fatalf("Error calling method: %v\n", err)
+		log.Printf("Error calling method: %v\n", err)
+		return "", err
 	}
 
-	log.Println(response)
+	return response.Output, nil
+}
+
+func GetTodos() (output []Entity.TodoStructure) {
+	response, err := GetClient().FindAll(context.Background(), &emptypb.Empty{})
+	if err != nil {
+		log.Printf("Error calling method: %v\n", err)
+	}
+
+	for _, item := range response.Todos {
+		output = append(output, Entity.ConvertFromProto(item))
+	}
+
+	return
 }

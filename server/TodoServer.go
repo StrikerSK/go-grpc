@@ -2,6 +2,7 @@ package server
 
 import (
 	"github.com/StrikerSK/go-grpc/proto/todo"
+	"github.com/StrikerSK/go-grpc/server/Repository"
 	"github.com/StrikerSK/go-grpc/src"
 	"google.golang.org/grpc"
 	"log"
@@ -10,6 +11,8 @@ import (
 )
 
 func CreateTodoServer() {
+	Repository.SetLocalRepository()
+
 	lis, err := net.Listen("tcp", src.ResolvePortNumber())
 	if err != nil {
 		log.Printf("Server init: %v\n", err)

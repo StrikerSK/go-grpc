@@ -1,2 +1,2 @@
 // To generate Go code from .proto file
-protoc --go-grpc_out=. chat.proto
+protoc --go-grpc_out=../proto --go_out=../proto --proto_path=../proto/chat.proto
