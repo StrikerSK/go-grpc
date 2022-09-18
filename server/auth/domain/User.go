@@ -19,3 +19,11 @@ func (r *User) FromRegisterRequest(user *auth.RegisterRequest) *User {
 	r.Password = user.Password
 	return r
 }
+
+func (r *User) ToRegisterRequest() *auth.RegisterRequest {
+	return &auth.RegisterRequest{
+		Email:    r.Email,
+		Username: r.Username,
+		Password: r.Password,
+	}
+}

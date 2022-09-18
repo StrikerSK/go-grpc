@@ -2,7 +2,6 @@ package service
 
 import (
 	"github.com/StrikerSK/go-grpc/proto/auth"
-	"github.com/StrikerSK/go-grpc/server/auth/domain"
 	"log"
 )
 
@@ -13,7 +12,6 @@ func NewConsoleUserService() *ConsoleUserService {
 }
 
 func (c *ConsoleUserService) RegisterUser(request *auth.RegisterRequest) error {
-	domain.NewUser().FromRegisterRequest(request)
 	log.Printf("User %s registered\n", request.Username)
 	return nil
 }

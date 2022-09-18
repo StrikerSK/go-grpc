@@ -18,8 +18,21 @@ type AuthorizationServer struct {
 }
 
 func (c *AuthorizationServer) RegisterUser(ctx context.Context, in *auth.RegisterRequest) (*auth.RegisterResponse, error) {
-	_ = c.service.RegisterUser(in)
-	return nil, nil
+	err := c.service.RegisterUser(in)
+
+	if err != nil {
+		return &auth.RegisterResponse{
+			Status: "Failed",
+			Error:  err.Error(),
+		}, err
+	}
+
+	response := &auth.RegisterResponse{
+		Status: "User registered",
+		Error:  "",
+	}
+
+	return response, nil
 }
 
 func CreateAuthorizationServer() {
