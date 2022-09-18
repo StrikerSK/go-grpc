@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/StrikerSK/go-grpc/server"
+	authorizationServer "github.com/StrikerSK/go-grpc/server/auth"
 )
 
 func main() {
-	server.CreateTodoServer()
+	authorizationServer.CreateAuthorizationServer()
 }
