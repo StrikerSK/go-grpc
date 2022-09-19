@@ -10,23 +10,23 @@ import (
 	"log"
 )
 
-type AuthorizationClient struct {
+type AuthorizationClientService struct {
 	client auth.AuthorizationServiceClient
 }
 
-func NewAuthorizationClient() *AuthorizationClient {
+func NewAuthorizationClientService() *AuthorizationClientService {
 	var conn *grpc.ClientConn
 	conn, err := grpc.Dial(src.ResolvePortNumber(), grpc.WithInsecure())
 	if err != nil {
 		log.Fatalf("Could not connect: %v\n", err)
 	}
 
-	return &AuthorizationClient{
+	return &AuthorizationClientService{
 		client: auth.NewAuthorizationServiceClient(conn),
 	}
 }
 
-func (c *AuthorizationClient) RegisterUser() {
+func (c *AuthorizationClientService) RegisterUser() {
 	user := domain.User{
 		Username: "tester",
 		Password: "123",

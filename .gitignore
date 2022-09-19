@@ -1,4 +1,6 @@
 .idea
 
-proto/chat
+proto/auth
 proto/todo
+
+main.exe
