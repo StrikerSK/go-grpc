@@ -1,10 +1,10 @@
 package domain
 
 import (
-	"github.com/StrikerSK/go-grpc/commons/proto/todo"
+	taskProto "github.com/StrikerSK/go-grpc/commons/proto/task"
 )
 
-type TodoStructure struct {
+type TaskStructure struct {
 	Id          string   `bson:"id" json:"id"`
 	Name        string   `bson:"name" json:"name"`
 	Description string   `bson:"description" json:"description"`
@@ -12,8 +12,8 @@ type TodoStructure struct {
 	Tags        []string `bson:"tags" json:"tags"`
 }
 
-func ConvertFromProto(input *todo.Todo) TodoStructure {
-	return TodoStructure{
+func ConvertFromProto(input *taskProto.Task) TaskStructure {
+	return TaskStructure{
 		Id:          input.Id,
 		Name:        input.Name,
 		Description: input.Description,
@@ -22,8 +22,8 @@ func ConvertFromProto(input *todo.Todo) TodoStructure {
 	}
 }
 
-func (r *TodoStructure) ConvertToProto() *todo.Todo {
-	return &todo.Todo{
+func (r *TaskStructure) ConvertToProto() *taskProto.Task {
+	return &taskProto.Task{
 		Id:          r.Id,
 		Name:        r.Name,
 		Description: r.Description,

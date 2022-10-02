@@ -5,17 +5,17 @@ package cmd
 
 import (
 	"fmt"
-	todoHandler "github.com/StrikerSK/go-grpc/client/todo/handler"
-	todoService "github.com/StrikerSK/go-grpc/client/todo/service"
-	todoServer "github.com/StrikerSK/go-grpc/server"
+	taskHandler "github.com/StrikerSK/go-grpc/client/task/handler"
+	taskService "github.com/StrikerSK/go-grpc/client/task/service"
+	taskServer "github.com/StrikerSK/go-grpc/server"
 	"github.com/gofiber/fiber/v2"
 	"github.com/spf13/cobra"
 	"log"
 )
 
-// todoCmd represents the todo command
-var todoCmd = &cobra.Command{
-	Use:   "todo",
+// taskCmd represents the task command
+var taskCmd = &cobra.Command{
+	Use:   "task",
 	Short: "A brief description of your command",
 	Run: func(cmd *cobra.Command, args []string) {
 		mode, err := cmd.Flags().GetString("mode")
@@ -26,10 +26,10 @@ var todoCmd = &cobra.Command{
 
 		switch mode {
 		case "server":
-			todoServer.NewTodoGrpcServer().RunServer()
+			taskServer.NewTaskGrpcServer().RunServer()
 		case "client":
 			app := fiber.New()
-			handler := todoHandler.NewTodoServiceHandler(todoService.NewTodoClientService())
+			handler := taskHandler.NewTaskServiceHandler(taskService.NewTaskClientService())
 			handler.EnrichRouter(app)
 			log.Fatal(app.Listen(fmt.Sprintf(":8080")))
 		default:
@@ -39,6 +39,6 @@ var todoCmd = &cobra.Command{
 }
 
 func init() {
-	rootCmd.AddCommand(todoCmd)
-	todoCmd.Flags().StringP("mode", "m", "server", "Run server mode")
+	rootCmd.AddCommand(taskCmd)
+	taskCmd.Flags().StringP("mode", "m", "server", "Run server mode")
 }

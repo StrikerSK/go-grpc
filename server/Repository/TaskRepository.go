@@ -1,20 +1,20 @@
 package Repository
 
 import (
-	todoDomain "github.com/StrikerSK/go-grpc/commons/todo/domain"
+	taskDomain "github.com/StrikerSK/go-grpc/commons/task/domain"
 	"github.com/google/uuid"
 	"log"
 )
 
-type LocalTodoRepository struct{}
+type LocalTaskRepository struct{}
 
-func NewLocalTodoRepository() LocalTodoRepository {
-	return LocalTodoRepository{}
+func NewLocalTaskRepository() LocalTaskRepository {
+	return LocalTaskRepository{}
 }
 
-func (r LocalTodoRepository) ReadTodo(ID string) (outputResult todoDomain.TodoStructure, err error) {
+func (r LocalTaskRepository) ReadTask(ID string) (outputResult taskDomain.TaskStructure, err error) {
 	log.Printf("User provided ID to read: %s\n", ID)
-	return todoDomain.TodoStructure{
+	return taskDomain.TaskStructure{
 		Id:          "123",
 		Name:        "MainTask",
 		Description: "This represents main task",
@@ -26,8 +26,8 @@ func (r LocalTodoRepository) ReadTodo(ID string) (outputResult todoDomain.TodoSt
 	}, nil
 }
 
-func (r LocalTodoRepository) ReadTodos() []todoDomain.TodoStructure {
-	return []todoDomain.TodoStructure{
+func (r LocalTaskRepository) ReadTasks() []taskDomain.TaskStructure {
+	return []taskDomain.TaskStructure{
 		{
 			Id:          "123",
 			Name:        "MainTask",
@@ -51,18 +51,18 @@ func (r LocalTodoRepository) ReadTodos() []todoDomain.TodoStructure {
 	}
 }
 
-func (r LocalTodoRepository) CreateTodo(inputTask *todoDomain.TodoStructure) (err error) {
+func (r LocalTaskRepository) CreateTask(inputTask *taskDomain.TaskStructure) (err error) {
 	log.Println("User provide new Task input: ", inputTask)
 	inputTask.Id = uuid.NewString()
 	return
 }
 
-func (r LocalTodoRepository) UpdateTodo(inputTask todoDomain.TodoStructure) (err error) {
+func (r LocalTaskRepository) UpdateTask(inputTask taskDomain.TaskStructure) (err error) {
 	log.Println("User provide updated Task input for ID [", inputTask.Id, "]: ", inputTask)
 	return
 }
 
-func (r LocalTodoRepository) DeleteTodo(ID string) (err error) {
+func (r LocalTaskRepository) DeleteTask(ID string) (err error) {
 	log.Printf("User provided ID to delete: %s\n", ID)
 	return nil
 }

@@ -7,5 +7,5 @@ Please use script prepared in `bin` file called `proto-gen.sh` on Unix systems. 
 This will prepare files required for both server and client to be able to run.
 
 ### Run
-To run `Task server` please use `go run main.go todo` command.
-To run `Task client` please use `go run main.go todo --mode client` command.
+To run `Task server` please use `go run main.go task` command.
+To run `Task client` please use `go run main.go task --mode client` command.
