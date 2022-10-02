@@ -9,29 +9,26 @@ import "google/protobuf/empty.proto";
 
 message Empty {}
 
-message StringRequest {
-  string input = 1;
+message TodoRequest {
+  string id = 1;
 }
 
-message StringResponse {
-  string output = 1;
-}
-
-message TodoArray {
-  repeated CustomTodo todos = 1;
-}
-
-message CustomTodo {
+message Todo {
   string id = 1;
   string name = 2;
   string description = 3;
   bool done = 4;
+  repeated string tags = 5;
+}
+
+message TodoList {
+  repeated Todo todos = 1;
 }
 
 service TodoService {
-  rpc FindAll(google.protobuf.Empty) returns(TodoArray) {}
-  rpc CreateTodo(CustomTodo) returns(StringResponse) {}
-  rpc ReadTodo(StringRequest) returns(CustomTodo) {}
-  rpc UpdateTodo(CustomTodo) returns(StringResponse) {}
-  rpc DeleteTodo(StringRequest) returns(StringResponse) {}
+  rpc CreateTodo(Todo) returns(TodoRequest) {}
+  rpc UpdateTodo(Todo) returns(google.protobuf.Empty) {}
+  rpc DeleteTodo(TodoRequest) returns(google.protobuf.Empty) {}
+  rpc GetTodo(TodoRequest) returns(Todo) {}
+  rpc GetTodos(google.protobuf.Empty) returns(TodoList) {}
 }
