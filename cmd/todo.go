@@ -26,7 +26,7 @@ var todoCmd = &cobra.Command{
 
 		switch mode {
 		case "server":
-			todoServer.CreateTodoServer()
+			todoServer.NewTodoGrpcServer().RunServer()
 		case "client":
 			app := fiber.New()
 			handler := todoHandler.NewTodoServiceHandler(todoService.NewTodoClientService())
