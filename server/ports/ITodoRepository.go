@@ -5,9 +5,9 @@ import (
 )
 
 type ITodoRepository interface {
-	FindAll() []todoDomain.TodoStructure
-	CreateTodo(todoDomain.TodoStructure) error
+	CreateTodo(*todoDomain.TodoStructure) error
 	ReadTodo(string) (todoDomain.TodoStructure, error)
+	ReadTodos() []todoDomain.TodoStructure
 	UpdateTodo(todoDomain.TodoStructure) error
 	DeleteTodo(string) error
 }

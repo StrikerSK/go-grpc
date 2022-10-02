@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 	"errors"
+	todoProto "github.com/StrikerSK/go-grpc/commons/proto/todo"
+	"github.com/StrikerSK/go-grpc/commons/src"
 	todoDomain "github.com/StrikerSK/go-grpc/commons/todo/domain"
-	"github.com/StrikerSK/go-grpc/proto/todo"
-	"github.com/StrikerSK/go-grpc/src"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -13,7 +13,7 @@ import (
 )
 
 type TodoClientService struct {
-	client todo.TodoServiceClient
+	client todoProto.TodoServiceClient
 }
 
 func NewTodoClientService() TodoClientService {
@@ -24,7 +24,7 @@ func NewTodoClientService() TodoClientService {
 	}
 
 	return TodoClientService{
-		client: todo.NewTodoServiceClient(conn),
+		client: todoProto.NewTodoServiceClient(conn),
 	}
 }
 
@@ -42,7 +42,7 @@ func (r *TodoClientService) CreateTodo(input todoDomain.TodoStructure) (string, 
 }
 
 func (r *TodoClientService) ReadTodo(id string) (todoDomain.TodoStructure, error) {
-	todoRequest := &todo.TodoRequest{
+	todoRequest := &todoProto.TodoRequest{
 		Id: id,
 	}
 
@@ -67,7 +67,7 @@ func (r *TodoClientService) UpdateTodo(input todoDomain.TodoStructure) error {
 }
 
 func (r *TodoClientService) DeleteTodo(id string) error {
-	_, err := r.client.DeleteTodo(context.Background(), &todo.TodoRequest{Id: id})
+	_, err := r.client.DeleteTodo(context.Background(), &todoProto.TodoRequest{Id: id})
 	if err != nil {
 		err = ProcessGrpcError(err)
 		log.Printf("Error calling method: %v\n", err)

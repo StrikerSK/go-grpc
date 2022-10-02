@@ -1,10 +1,10 @@
 package server
 
 import (
-	"github.com/StrikerSK/go-grpc/proto/todo"
+	todoProto "github.com/StrikerSK/go-grpc/commons/proto/todo"
+	"github.com/StrikerSK/go-grpc/commons/src"
 	todoRepository "github.com/StrikerSK/go-grpc/server/Repository"
 	todoService "github.com/StrikerSK/go-grpc/server/service"
-	"github.com/StrikerSK/go-grpc/src"
 	"google.golang.org/grpc"
 	"log"
 	"net"
@@ -17,10 +17,11 @@ type TodoGrpcServer struct {
 
 func NewTodoGrpcServer() *TodoGrpcServer {
 	repository := todoRepository.NewLocalTodoRepository()
-	service := todoService.NewTodoService(&repository)
+	service := todoService.NewTodoLocalService(repository)
+	grpcService := todoService.NewTodoGrpcService(service)
 
 	grpcServer := grpc.NewServer()
-	todo.RegisterTodoServiceServer(grpcServer, service)
+	todoProto.RegisterTodoServiceServer(grpcServer, grpcService)
 
 	return &TodoGrpcServer{
 		server: grpcServer,

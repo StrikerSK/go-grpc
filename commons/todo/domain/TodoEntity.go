@@ -1,6 +1,8 @@
 package domain
 
-import "github.com/StrikerSK/go-grpc/proto/todo"
+import (
+	"github.com/StrikerSK/go-grpc/commons/proto/todo"
+)
 
 type TodoStructure struct {
 	Id          string   `bson:"id" json:"id"`

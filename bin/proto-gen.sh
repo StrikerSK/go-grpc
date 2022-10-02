@@ -1,1 +1,1 @@
-protoc --go-grpc_out=../proto --go_out=../proto --proto_path=../proto Todo.proto
+protoc --go-grpc_out=../commons/proto --go_out=../commons/proto --proto_path=../commons/proto Todo.proto

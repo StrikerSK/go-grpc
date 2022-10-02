@@ -2,6 +2,7 @@ package Repository
 
 import (
 	todoDomain "github.com/StrikerSK/go-grpc/commons/todo/domain"
+	"github.com/google/uuid"
 	"log"
 )
 
@@ -11,7 +12,7 @@ func NewLocalTodoRepository() LocalTodoRepository {
 	return LocalTodoRepository{}
 }
 
-func (r *LocalTodoRepository) ReadTodo(ID string) (outputResult todoDomain.TodoStructure, err error) {
+func (r LocalTodoRepository) ReadTodo(ID string) (outputResult todoDomain.TodoStructure, err error) {
 	log.Printf("User provided ID to read: %s\n", ID)
 	return todoDomain.TodoStructure{
 		Id:          "123",
@@ -25,7 +26,7 @@ func (r *LocalTodoRepository) ReadTodo(ID string) (outputResult todoDomain.TodoS
 	}, nil
 }
 
-func (r *LocalTodoRepository) FindAll() []todoDomain.TodoStructure {
+func (r LocalTodoRepository) ReadTodos() []todoDomain.TodoStructure {
 	return []todoDomain.TodoStructure{
 		{
 			Id:          "123",
@@ -50,17 +51,18 @@ func (r *LocalTodoRepository) FindAll() []todoDomain.TodoStructure {
 	}
 }
 
-func (r *LocalTodoRepository) CreateTodo(inputTask todoDomain.TodoStructure) (err error) {
+func (r LocalTodoRepository) CreateTodo(inputTask *todoDomain.TodoStructure) (err error) {
 	log.Println("User provide new Task input: ", inputTask)
+	inputTask.Id = uuid.NewString()
 	return
 }
 
-func (r *LocalTodoRepository) UpdateTodo(inputTask todoDomain.TodoStructure) (err error) {
+func (r LocalTodoRepository) UpdateTodo(inputTask todoDomain.TodoStructure) (err error) {
 	log.Println("User provide updated Task input for ID [", inputTask.Id, "]: ", inputTask)
 	return
 }
 
-func (r *LocalTodoRepository) DeleteTodo(ID string) (err error) {
+func (r LocalTodoRepository) DeleteTodo(ID string) (err error) {
 	log.Printf("User provided ID to delete: %s\n", ID)
 	return nil
 }
