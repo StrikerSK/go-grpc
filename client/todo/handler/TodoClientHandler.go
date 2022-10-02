@@ -2,7 +2,7 @@ package handler
 
 import (
 	todoService "github.com/StrikerSK/go-grpc/client/todo/service"
-	"github.com/StrikerSK/go-grpc/server/Entity"
+	todoDomain "github.com/StrikerSK/go-grpc/commons/todo/domain"
 	"github.com/gofiber/fiber/v2"
 	"github.com/google/uuid"
 	"log"
@@ -39,31 +39,46 @@ func (r *TodoServiceHandler) ReadTodo(c *fiber.Ctx) error {
 }
 
 func (r *TodoServiceHandler) CreateTodo(c *fiber.Ctx) error {
-	var tmpTodo Entity.TodoStructure
+	var tmpTodo todoDomain.TodoStructure
 	_ = c.BodyParser(&tmpTodo)
 
-	tmpTodo.Id = uuid.New().String()
-	_ = r.service.CreateTodo(tmpTodo)
+	newID := uuid.New().String()
+	tmpTodo.Id = newID
+	_, _ = r.service.CreateTodo(tmpTodo)
 
-	return c.JSON(map[string]string{"data": tmpTodo.Id})
+	return c.JSON(map[string]string{"data": newID})
 }
 
 func (r *TodoServiceHandler) UpdateTodo(c *fiber.Ctx) error {
-	var tmpTodo Entity.TodoStructure
+	var tmpTodo todoDomain.TodoStructure
 	if err := c.BodyParser(&tmpTodo); err != nil {
 		log.Printf("%v\n", err)
 	}
 
 	tmpTodo.Id = c.Params("id")
-	_ = r.service.UpdateTodo(tmpTodo)
+	if err := r.service.UpdateTodo(tmpTodo); err != nil {
+		log.Printf("%v\n", err)
+		c.Status(http.StatusInternalServerError)
+	}
+
 	return c.SendStatus(http.StatusOK)
 }
 
 func (r *TodoServiceHandler) DeleteTodo(c *fiber.Ctx) error {
-	_, _ = r.service.DeleteTodo(c.Params("id"))
+	if err := r.service.DeleteTodo(c.Params("id")); err != nil {
+		log.Printf("%v\n", err)
+		c.Status(http.StatusInternalServerError)
+	}
+
 	return c.SendStatus(http.StatusOK)
 }
 
 func (r *TodoServiceHandler) FindTasks(c *fiber.Ctx) error {
-	return c.JSON(r.service.GetTodos())
+	todos, err := r.service.GetTodos()
+	if err != nil {
+		log.Printf("%v\n", err)
+		c.Status(http.StatusInternalServerError)
+	}
+
+	return c.JSON(todos)
 }
