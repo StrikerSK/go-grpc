@@ -22,7 +22,7 @@ var authCmd = &cobra.Command{
 
 		switch mode {
 		case "server":
-			authorizationServer.CreateAuthorizationServer()
+			authorizationServer.NewAuthorizationServer().RunServer()
 		case "client":
 			client := authorizationClient.NewAuthorizationClientService()
 			client.RegisterUser()
