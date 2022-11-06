@@ -2,7 +2,7 @@ package server
 
 import (
 	taskProto "github.com/StrikerSK/go-grpc/commons/proto/task"
-	"github.com/StrikerSK/go-grpc/commons/src"
+	portResolver "github.com/StrikerSK/go-grpc/commons/src"
 	taskRepository "github.com/StrikerSK/go-grpc/server/Repository"
 	taskService "github.com/StrikerSK/go-grpc/server/service"
 	"google.golang.org/grpc"
@@ -29,7 +29,7 @@ func NewTaskGrpcServer() *TaskGrpcServer {
 }
 
 func (r TaskGrpcServer) RunServer() {
-	lis, err := net.Listen("tcp", src.ResolvePortNumber())
+	lis, err := net.Listen("tcp", portResolver.ResolvePortNumber())
 	if err != nil {
 		log.Printf("Server init: %v\n", err)
 		os.Exit(1)
